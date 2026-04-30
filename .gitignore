@@ -12,3 +12,4 @@ tmp/
 dist/
 coverage/
 .env
+reports/

@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "description": "Local smoke, validation, performance, and sub-agent evaluation matrix for AION-FORGE skills.",
+  "performance_budgets_seconds": {
+    "single_syntax_check": 1,
+    "single_cli_dry_run": 1,
+    "validate_skills": 2,
+    "full_check": 8,
+    "npm_pack_dry_run": 3
+  },
+  "suites": [
+    {
+      "id": "syntax-and-format",
+      "purpose": "Catch broken shebangs, one-line files, invalid JavaScript, invalid Python, invalid Bash, and invalid SKILL.md frontmatter.",
+      "commands": [
+        "node --check bin/aion-forge-skills.js",
+        "bash -n scripts/install-aion-forge.sh",
+        "npm run check:python",
+        "npm run check:format",
+        "npm run validate:skills"
+      ]
+    },
+    {
+      "id": "installer-smoke",
+      "purpose": "Verify each install scope resolves to the intended target without writing files.",
+      "commands": [
+        "node bin/aion-forge-skills.js list --json",
+        "node bin/aion-forge-skills.js project --dry-run",
+        "node bin/aion-forge-skills.js user --dry-run",
+        "node bin/aion-forge-skills.js admin --dry-run",
+        "node bin/aion-forge-skills.js legacy-codex --dry-run"
+      ]
+    },
+    {
+      "id": "evaluator-behavior",
+      "purpose": "Verify deterministic graders pass strong output and reject flashy unsupported AI output.",
+      "commands": [
+        "npm run test:evaluator",
+        "npm run test:subagents",
+        "npm run test:json",
+        "python skills/aion-evaluation-harness/scripts/evaluate_innovation_json.py examples/alarm_review_queue_candidate.json"
+      ]
+    },
+    {
+      "id": "cli-and-install",
+      "purpose": "Verify CLI argument handling, dry-run behavior, path resolution, and temp-dir installation.",
+      "commands": [
+        "npm run test:cli",
+        "npm run test:install"
+      ]
+    },
+    {
+      "id": "package-smoke",
+      "purpose": "Verify npm package contents are valid and do not include cache artifacts.",
+      "commands": [
+        "npm run test:package",
+        "npm pack --dry-run"
+      ]
+    }
+  ],
+  "subagent_roles": [
+    "install-smoke-agent",
+    "evidence-review-agent",
+    "skeptic-review-agent",
+    "spec-quality-agent",
+    "performance-audit-agent"
+  ]
+}

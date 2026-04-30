@@ -293,6 +293,19 @@ npm run check:python
 npm run check:bash
 npm run validate:skills
 npm run test:evaluator
+npm run test:subagents
+npm run test:json
+npm run test:cli
+npm run test:install
+npm run test:package
+npm run test:local
+npm run bench
+```
+
+Benchmark output can be written locally without committing generated reports:
+
+```bash
+npm run bench -- --write reports/local-benchmark.json
 ```
 
 Pack locally:
