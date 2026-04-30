@@ -51,6 +51,35 @@ try {
   const forcedInstall = run(["project", "--project", tempRoot, "--force"]);
   assertSuccess(forcedInstall, "project reinstall with force");
   assert(forcedInstall.stdout.includes("Installed: aion-forge"), "force install should reinstall skills");
+
+  const fullRoot = fs.mkdtempSync(path.join(os.tmpdir(), "aion forge full setup "));
+  try {
+    const fullSetup = run(["setup", "--scope", "project", "--project", fullRoot]);
+    assertSuccess(fullSetup, "project full setup");
+
+    const fullSkillTarget = path.join(fullRoot, ".agents", "skills");
+    const fullToolkitTarget = path.join(fullRoot, ".aion-forge");
+    const fullInstalled = fs
+      .readdirSync(fullSkillTarget, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name);
+
+    assert(fullInstalled.length === expectedSkillCount, `full setup expected ${expectedSkillCount} skills`);
+    assert(fs.existsSync(path.join(fullToolkitTarget, "package.json")), "full setup missing toolkit package.json");
+    assert(fs.existsSync(path.join(fullToolkitTarget, "README.md")), "full setup missing toolkit README.md");
+    assert(fs.existsSync(path.join(fullToolkitTarget, "scripts", "validate-skills.js")), "full setup missing validator");
+    assert(fs.existsSync(path.join(fullToolkitTarget, "tests", "install-local.mjs")), "full setup missing local tests");
+    assert(
+      fs.existsSync(path.join(fullToolkitTarget, "skills", "aion-forge", "SKILL.md")),
+      "full setup missing toolkit skill sources",
+    );
+
+    const fullSetupAgain = run(["setup", "--scope", "project", "--project", fullRoot]);
+    assertSuccess(fullSetupAgain, "project full setup repeat");
+    assert(fullSetupAgain.stderr.includes("Skipping existing toolkit"), "repeat full setup should skip existing toolkit");
+  } finally {
+    fs.rmSync(fullRoot, { recursive: true, force: true });
+  }
 } finally {
   fs.rmSync(tempRoot, { recursive: true, force: true });
 }

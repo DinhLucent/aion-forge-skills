@@ -61,7 +61,56 @@ This installs the skills into:
 <project>/.agents/skills/
 ```
 
+The `skills` CLI installs the skill folders and the resources bundled inside each skill. It does not install this repository's root-level development files such as `README.md`, `package.json`, `bin/`, `tests/`, or root `scripts/`.
+
 Use the interactive command when you want to choose individual skills or target multiple agents. Use the non-interactive command when you want a repeatable project install for Codex.
+
+### What Should Be Installed
+
+A complete Codex project install should create these directories:
+
+```text
+<project>/.agents/skills/aion-contradiction-miner/
+<project>/.agents/skills/aion-evaluation-harness/
+<project>/.agents/skills/aion-evidence-harvester/
+<project>/.agents/skills/aion-evolution-memory/
+<project>/.agents/skills/aion-feature-spec-architect/
+<project>/.agents/skills/aion-forge/
+<project>/.agents/skills/aion-idea-forge/
+<project>/.agents/skills/aion-pain-point-distiller/
+<project>/.agents/skills/aion-skeptic-council/
+```
+
+Each installed skill directory should include its own `SKILL.md` and any bundled `agents/`, `references/`, or `scripts/` files from that skill folder.
+
+### Full Toolkit Setup
+
+If you want the complete AION-FORGE tool setup, use the AION installer instead of the generic `skills` CLI. This installs both:
+
+- agent skills into `<project>/.agents/skills/`
+- the full local toolkit into `<project>/.aion-forge/`
+
+The toolkit includes `bin/`, `evals/`, `examples/`, `scripts/`, `tests/`, `skills/`, `package.json`, `README.md`, and `LICENSE`.
+
+Before npm publication:
+
+```bash
+npx github:DinhLucent/aion-forge-skills setup --scope project
+```
+
+After npm publication:
+
+```bash
+npx aion-forge-skills setup --scope project
+```
+
+For a user-level setup:
+
+```bash
+npx github:DinhLucent/aion-forge-skills setup --scope user
+```
+
+This installs skills into `~/.agents/skills/` and the toolkit into `~/.aion-forge/`.
 
 ## AION Installer
 
@@ -147,6 +196,8 @@ npx github:DinhLucent/aion-forge-skills install --scope project
 npx github:DinhLucent/aion-forge-skills install --scope user
 npx github:DinhLucent/aion-forge-skills install --scope admin
 npx github:DinhLucent/aion-forge-skills install --scope legacy-codex
+npx github:DinhLucent/aion-forge-skills setup --scope project
+npx github:DinhLucent/aion-forge-skills setup --scope user
 ```
 
 `global` is accepted as a backward-compatible alias for `user`.

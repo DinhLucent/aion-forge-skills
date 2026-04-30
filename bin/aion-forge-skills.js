@@ -6,6 +6,18 @@ const path = require("node:path");
 
 const repoRoot = path.resolve(__dirname, "..");
 const sourceDir = path.join(repoRoot, "skills");
+const toolkitEntries = [
+  "bin",
+  "evals",
+  "examples",
+  "scripts",
+  "skills",
+  "tests",
+  "README.md",
+  "LICENSE",
+  "package.json",
+  ".npmignore",
+];
 
 function usage() {
   return `AION-FORGE skills installer
@@ -16,17 +28,25 @@ Usage:
   npx aion-forge-skills admin [--force] [--dry-run]
   npx aion-forge-skills legacy-codex [--home <path>] [--force] [--dry-run]
   npx aion-forge-skills install --scope project|user|admin|legacy-codex [options]
+  npx aion-forge-skills setup --scope project|user|admin|legacy-codex [options]
   npx aion-forge-skills list [--json]
 
 GitHub usage before npm publish:
   npx github:DinhLucent/aion-forge-skills project
   npx github:DinhLucent/aion-forge-skills user
+  npx github:DinhLucent/aion-forge-skills setup --scope project
 
 Targets:
   project -> <project>/.agents/skills
   user    -> ~/.agents/skills
   admin   -> /etc/codex/skills
   legacy-codex -> ~/.codex/skills
+
+Full setup toolkit targets:
+  project -> <project>/.aion-forge
+  user    -> ~/.aion-forge
+  admin   -> /etc/codex/aion-forge
+  legacy-codex -> ~/.codex/aion-forge
 `;
 }
 
@@ -41,7 +61,7 @@ function parseArgs(argv) {
     json: false,
   };
 
-  if (args.command === "install") {
+  if (args.command === "install" || args.command === "setup") {
     args.scope = "project";
   } else if (
     args.command === "project" ||
@@ -128,6 +148,26 @@ function resolveTarget(args) {
   throw new Error("Scope must be project, user, admin, or legacy-codex");
 }
 
+function resolveToolkitTarget(args) {
+  if (args.scope === "project") {
+    return path.join(path.resolve(args.projectPath), ".aion-forge");
+  }
+
+  if (args.scope === "user") {
+    return path.join(path.resolve(args.homePath), ".aion-forge");
+  }
+
+  if (args.scope === "admin") {
+    return "/etc/codex/aion-forge";
+  }
+
+  if (args.scope === "legacy-codex") {
+    return path.join(path.resolve(args.homePath), ".codex", "aion-forge");
+  }
+
+  throw new Error("Scope must be project, user, admin, or legacy-codex");
+}
+
 function install(args) {
   const skills = listSkills();
   const targetDir = resolveTarget(args);
@@ -165,6 +205,55 @@ function install(args) {
   console.log("Done.");
 }
 
+function installToolkit(args) {
+  const targetDir = resolveToolkitTarget(args);
+
+  console.log(`AION-FORGE toolkit target: ${targetDir}`);
+
+  if (args.dryRun) {
+    for (const entry of toolkitEntries) {
+      if (fs.existsSync(path.join(repoRoot, entry))) {
+        console.log(`Would copy toolkit entry: ${entry}`);
+      }
+    }
+    return;
+  }
+
+  if (fs.existsSync(targetDir)) {
+    if (!args.force) {
+      console.warn(`Skipping existing toolkit '${targetDir}'. Re-run with --force to overwrite files.`);
+      return;
+    }
+
+    fs.rmSync(targetDir, { recursive: true, force: true });
+  }
+
+  fs.mkdirSync(targetDir, { recursive: true });
+
+  for (const entry of toolkitEntries) {
+    const source = path.join(repoRoot, entry);
+    const destination = path.join(targetDir, entry);
+
+    if (!fs.existsSync(source)) {
+      continue;
+    }
+
+    fs.cpSync(source, destination, {
+      recursive: true,
+      force: true,
+      errorOnExist: false,
+    });
+    console.log(`Copied toolkit entry: ${entry}`);
+  }
+
+  console.log("Toolkit setup done.");
+}
+
+function setup(args) {
+  install(args);
+  installToolkit(args);
+}
+
 function main() {
   try {
     const args = parseArgs(process.argv.slice(2));
@@ -188,6 +277,11 @@ function main() {
 
     if (args.command === "install") {
       install(args);
+      return;
+    }
+
+    if (args.command === "setup") {
+      setup(args);
       return;
     }
 

@@ -67,6 +67,13 @@ try {
   assertSuccess(admin, "admin dry-run");
   assert(admin.stdout.includes("/etc/codex/skills"), "admin target mismatch");
 
+  const setup = run(["setup", "--scope", "project", "--project", tempRoot, "--dry-run"]);
+  assertSuccess(setup, "setup dry-run");
+  assert(setup.stdout.includes(path.join(tempRoot, ".agents", "skills")), "setup skills target mismatch");
+  assert(setup.stdout.includes(path.join(tempRoot, ".aion-forge")), "setup toolkit target mismatch");
+  assert(setup.stdout.includes("Would copy toolkit entry: package.json"), "setup should include package.json");
+  assert(!fs.existsSync(path.join(tempRoot, ".aion-forge")), "setup dry-run wrote toolkit files");
+
   const badArg = run(["project", "--unknown"]);
   assert(badArg.status !== 0, "unknown args should fail");
 
