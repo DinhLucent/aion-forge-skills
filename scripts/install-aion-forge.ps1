@@ -1,9 +1,8 @@
 param(
-    [ValidateSet("project", "user", "legacy-codex", "global")]
+    [ValidateSet("project", "user", "admin", "legacy-codex", "global")]
     [string]$Scope = "project",
     [string]$ProjectPath = (Get-Location).Path,
     [string]$HomePath = $HOME,
-    [string]$CodexHome = $env:CODEX_HOME,
     [switch]$Force,
     [switch]$DryRun
 )
@@ -22,10 +21,9 @@ if ($Scope -eq "global") {
 }
 
 if ($Scope -eq "legacy-codex") {
-    if ([string]::IsNullOrWhiteSpace($CodexHome)) {
-        $CodexHome = Join-Path $HOME ".codex"
-    }
-    $target = Join-Path $CodexHome "skills"
+    $target = Join-Path $HomePath ".codex\skills"
+} elseif ($Scope -eq "admin") {
+    $target = "/etc/codex/skills"
 } elseif ($Scope -eq "user") {
     $target = Join-Path $HomePath ".agents\skills"
 } else {

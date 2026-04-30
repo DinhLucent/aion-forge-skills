@@ -42,6 +42,8 @@ Before the package is published to npm, install directly from GitHub:
 ```bash
 npx github:DinhLucent/aion-forge-skills project
 npx github:DinhLucent/aion-forge-skills user
+npx github:DinhLucent/aion-forge-skills admin
+npx github:DinhLucent/aion-forge-skills legacy-codex
 ```
 
 After npm publication, the same installer works with the package name:
@@ -49,6 +51,8 @@ After npm publication, the same installer works with the package name:
 ```bash
 npx aion-forge-skills project
 npx aion-forge-skills user
+npx aion-forge-skills admin
+npx aion-forge-skills legacy-codex
 ```
 
 Aliases are also available:
@@ -56,6 +60,8 @@ Aliases are also available:
 ```bash
 npx aion-forge project
 npx aion-forge user
+npx aion-forge admin
+npx aion-forge legacy-codex
 ```
 
 ### Project Install
@@ -82,6 +88,16 @@ Installs skills into the current user's Codex skill directory:
 
 This is the recommended personal install target for current Codex Agent Skills.
 
+### Admin Install
+
+Installs skills into the machine-wide Codex skill directory:
+
+```text
+/etc/codex/skills/
+```
+
+This may require elevated filesystem permissions.
+
 ### Legacy Codex Install
 
 For older Codex setups, install into the legacy Codex home:
@@ -90,17 +106,7 @@ For older Codex setups, install into the legacy Codex home:
 ~/.codex/skills/
 ```
 
-If `CODEX_HOME` is set, legacy install uses:
-
-```text
-$CODEX_HOME/skills/
-```
-
-Use a custom legacy Codex home:
-
-```bash
-npx github:DinhLucent/aion-forge-skills legacy-codex --codex-home /path/to/.codex
-```
+Legacy install is kept only for older local setups that still read from `~/.codex/skills`.
 
 ### Installer Options
 
@@ -111,6 +117,7 @@ npx github:DinhLucent/aion-forge-skills project --dry-run
 npx github:DinhLucent/aion-forge-skills project --force
 npx github:DinhLucent/aion-forge-skills install --scope project
 npx github:DinhLucent/aion-forge-skills install --scope user
+npx github:DinhLucent/aion-forge-skills install --scope admin
 npx github:DinhLucent/aion-forge-skills install --scope legacy-codex
 ```
 
@@ -123,6 +130,7 @@ PowerShell:
 ```powershell
 .\scripts\install-aion-forge.ps1 -Scope project -ProjectPath .
 .\scripts\install-aion-forge.ps1 -Scope user
+.\scripts\install-aion-forge.ps1 -Scope admin
 .\scripts\install-aion-forge.ps1 -Scope legacy-codex
 ```
 
@@ -131,6 +139,7 @@ Bash:
 ```bash
 ./scripts/install-aion-forge.sh project .
 ./scripts/install-aion-forge.sh user
+./scripts/install-aion-forge.sh admin
 ./scripts/install-aion-forge.sh legacy-codex
 ```
 
@@ -279,6 +288,7 @@ Individual checks:
 
 ```bash
 npm run check:node
+npm run check:format
 npm run check:python
 npm run check:bash
 npm run validate:skills
@@ -296,6 +306,7 @@ Run an npx-style local test:
 ```bash
 node bin/aion-forge-skills.js project --dry-run
 node bin/aion-forge-skills.js user --dry-run
+node bin/aion-forge-skills.js admin --dry-run
 node bin/aion-forge-skills.js legacy-codex --dry-run
 ```
 

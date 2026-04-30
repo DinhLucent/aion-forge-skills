@@ -21,15 +21,17 @@ case "$scope" in
   user)
     target="$HOME/.agents/skills"
     ;;
+  admin)
+    target="/etc/codex/skills"
+    ;;
   legacy-codex)
-    codex_home="${CODEX_HOME:-$HOME/.codex}"
-    target="$codex_home/skills"
+    target="$HOME/.codex/skills"
     ;;
   project)
     target="$(cd -- "$project_path" && pwd)/.agents/skills"
     ;;
   *)
-    echo "Usage: install-aion-forge.sh [project|user|legacy-codex] [project_path]" >&2
+    echo "Usage: install-aion-forge.sh [project|user|admin|legacy-codex] [project_path]" >&2
     exit 2
     ;;
 esac

@@ -6,6 +6,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const skillsDir = path.join(root, "skills");
 const skillNamePattern = /^[a-z0-9-]+$/;
+const allowedNameMismatches = new Map();
 
 function fail(message) {
   console.error(message);
@@ -48,6 +49,12 @@ for (const skillName of skillDirs) {
   }
 
   const content = fs.readFileSync(skillMd, "utf8");
+  const lineCount = content.split(/\r?\n/).length;
+  if (lineCount < 8) {
+    fail(`${skillName}: SKILL.md appears one-line/minified or too short (${lineCount} lines)`);
+    continue;
+  }
+
   const firstLine = content.split(/\r?\n/, 1)[0];
   if (firstLine !== "---") {
     fail(`${skillName}: SKILL.md must start with standalone YAML delimiter`);
@@ -62,7 +69,11 @@ for (const skillName of skillDirs) {
 
   if (!fields.name) fail(`${skillName}: missing frontmatter name`);
   if (!fields.description) fail(`${skillName}: missing frontmatter description`);
-  if (fields.name && fields.name !== skillName) {
+  if (
+    fields.name &&
+    fields.name !== skillName &&
+    allowedNameMismatches.get(skillName) !== fields.name
+  ) {
     fail(`${skillName}: frontmatter name must match folder name`);
   }
   if (fields.name && !skillNamePattern.test(fields.name)) {

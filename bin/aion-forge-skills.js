@@ -13,8 +13,9 @@ function usage() {
 Usage:
   npx aion-forge-skills project [--project <path>] [--force] [--dry-run]
   npx aion-forge-skills user [--home <path>] [--force] [--dry-run]
-  npx aion-forge-skills legacy-codex [--codex-home <path>] [--force] [--dry-run]
-  npx aion-forge-skills install --scope project|user|legacy-codex [options]
+  npx aion-forge-skills admin [--force] [--dry-run]
+  npx aion-forge-skills legacy-codex [--home <path>] [--force] [--dry-run]
+  npx aion-forge-skills install --scope project|user|admin|legacy-codex [options]
   npx aion-forge-skills list [--json]
 
 GitHub usage before npm publish:
@@ -24,7 +25,8 @@ GitHub usage before npm publish:
 Targets:
   project -> <project>/.agents/skills
   user    -> ~/.agents/skills
-  legacy-codex -> $CODEX_HOME/skills, or ~/.codex/skills when CODEX_HOME is unset
+  admin   -> /etc/codex/skills
+  legacy-codex -> ~/.codex/skills
 `;
 }
 
@@ -34,7 +36,6 @@ function parseArgs(argv) {
     scope: null,
     projectPath: process.cwd(),
     homePath: os.homedir(),
-    codexHome: process.env.CODEX_HOME || path.join(os.homedir(), ".codex"),
     force: false,
     dryRun: false,
     json: false,
@@ -42,7 +43,12 @@ function parseArgs(argv) {
 
   if (args.command === "install") {
     args.scope = "project";
-  } else if (args.command === "project" || args.command === "user" || args.command === "legacy-codex") {
+  } else if (
+    args.command === "project" ||
+    args.command === "user" ||
+    args.command === "admin" ||
+    args.command === "legacy-codex"
+  ) {
     args.scope = args.command;
     args.command = "install";
   } else if (args.command === "global") {
@@ -62,9 +68,6 @@ function parseArgs(argv) {
       i += 1;
     } else if (arg === "--home") {
       args.homePath = requiredValue(arg, next);
-      i += 1;
-    } else if (arg === "--codex-home") {
-      args.codexHome = requiredValue(arg, next);
       i += 1;
     } else if (arg === "--force" || arg === "-f") {
       args.force = true;
@@ -114,11 +117,15 @@ function resolveTarget(args) {
     return path.join(path.resolve(args.homePath), ".agents", "skills");
   }
 
-  if (args.scope === "legacy-codex") {
-    return path.join(path.resolve(args.codexHome), "skills");
+  if (args.scope === "admin") {
+    return "/etc/codex/skills";
   }
 
-  throw new Error("Scope must be project, user, or legacy-codex");
+  if (args.scope === "legacy-codex") {
+    return path.join(path.resolve(args.homePath), ".codex", "skills");
+  }
+
+  throw new Error("Scope must be project, user, admin, or legacy-codex");
 }
 
 function install(args) {
