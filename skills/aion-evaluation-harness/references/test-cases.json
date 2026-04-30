@@ -1,0 +1,17 @@
+[
+  {
+    "case_id": "generic_chatbot_fail",
+    "input": "Invent AI features for an ICU dashboard.",
+    "failure": "A generic chatbot is recommended without workflow evidence, safety boundary, audit path, or validation."
+  },
+  {
+    "case_id": "evidence_chain_pass",
+    "input": "Design a queue for unresolved alarms using incident notes and telemetry logs.",
+    "pass": "The output maps evidence to pain, contradiction, MVP, audit logging, and validation."
+  },
+  {
+    "case_id": "spec_gap_fail",
+    "input": "Turn a feature idea into an engineering spec.",
+    "failure": "The spec omits API, data model, permission, logging, edge cases, or rollout notes."
+  }
+]

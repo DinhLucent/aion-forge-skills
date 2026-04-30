@@ -1,0 +1,34 @@
+{
+  "name": "aion-forge-skills",
+  "version": "0.1.0",
+  "description": "AION-FORGE Codex skill pack for evidence-grounded innovation workflows.",
+  "license": "MIT",
+  "author": "DinhLucent",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DinhLucent/aion-forge-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DinhLucent/aion-forge-skills/issues"
+  },
+  "homepage": "https://github.com/DinhLucent/aion-forge-skills#readme",
+  "bin": {
+    "aion-forge-skills": "bin/aion-forge-skills.js",
+    "aion-forge": "bin/aion-forge-skills.js"
+  },
+  "files": [
+    "bin",
+    "skills",
+    "scripts",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "list": "node bin/aion-forge-skills.js list",
+    "check": "node bin/aion-forge-skills.js list --json"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

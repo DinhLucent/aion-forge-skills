@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Feature Spec Architect"
+  short_description: "Write engineering-ready feature specs"
+  default_prompt: "Use $aion-feature-spec-architect to convert validated ideas into engineering specs."

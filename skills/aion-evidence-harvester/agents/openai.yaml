@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Evidence Harvester"
+  short_description: "Collect trustworthy innovation evidence"
+  default_prompt: "Use $aion-evidence-harvester to gather evidence before proposing features."

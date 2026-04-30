@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION-FORGE"
+  short_description: "Reality-grounded innovation OS"
+  default_prompt: "Use $aion-forge to turn evidence into engineering-ready product innovations."

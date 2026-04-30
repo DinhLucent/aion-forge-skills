@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Idea Forge"
+  short_description: "Generate evidence-linked feature hypotheses"
+  default_prompt: "Use $aion-idea-forge to generate feature hypotheses grounded in evidence and pain points."

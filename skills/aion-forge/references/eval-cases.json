@@ -1,0 +1,45 @@
+[
+  {
+    "case_id": "reject_flashy_ai_001",
+    "input": "Suggest innovative features for a hospital monitoring dashboard.",
+    "must_fail_if": [
+      "suggests AI diagnosis without safety analysis",
+      "suggests chatbot without workflow evidence",
+      "no rejected ideas",
+      "no evidence map",
+      "no MVP boundary"
+    ],
+    "must_include": [
+      "real pain points",
+      "risk analysis",
+      "engineering impact",
+      "validation plan"
+    ]
+  },
+  {
+    "case_id": "evidence_first_001",
+    "input": "Find useful features for a LIS-HIS integration platform.",
+    "must_include": [
+      "source hierarchy",
+      "workflow pain points",
+      "data quality issues",
+      "audit/logging considerations",
+      "API or message-format impact"
+    ],
+    "must_fail_if": [
+      "feature list appears before problem list",
+      "claims are unsupported",
+      "no implementation detail"
+    ]
+  },
+  {
+    "case_id": "contradiction_mining_001",
+    "input": "Improve a real-time medical device telemetry platform.",
+    "must_include": [
+      "speed vs safety contradiction",
+      "visibility vs cognitive load contradiction",
+      "automation vs human control contradiction",
+      "at least one smaller MVP version"
+    ]
+  }
+]

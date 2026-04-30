@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Skeptic Council"
+  short_description: "Challenge weak or risky ideas"
+  default_prompt: "Use $aion-skeptic-council to pressure-test feature ideas before building."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Pain-Point Distiller"
+  short_description: "Convert evidence into real problems"
+  default_prompt: "Use $aion-pain-point-distiller to distill evidence into pain points before ideation."

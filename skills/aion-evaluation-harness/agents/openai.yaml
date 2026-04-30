@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Evaluation Harness"
+  short_description: "Score innovation outputs and failures"
+  default_prompt: "Use $aion-evaluation-harness to evaluate whether innovation output is grounded and buildable."

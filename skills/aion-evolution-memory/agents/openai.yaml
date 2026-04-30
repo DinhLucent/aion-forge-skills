@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Evolution Memory"
+  short_description: "Curate reusable innovation memory"
+  default_prompt: "Use $aion-evolution-memory to record validated lessons without storing unsupported claims."

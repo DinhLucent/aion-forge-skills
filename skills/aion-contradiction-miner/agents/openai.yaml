@@ -1,0 +1,4 @@
+interface:
+  display_name: "AION Contradiction Miner"
+  short_description: "Find tensions that create opportunity"
+  default_prompt: "Use $aion-contradiction-miner to identify contradictions in a workflow or system."

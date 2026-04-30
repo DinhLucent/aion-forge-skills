@@ -1,0 +1,65 @@
+{
+  "feature_name": "Alarm Review Queue",
+  "domain": "ICU CRRT monitoring",
+  "problem_solved": "Operators need a reliable way to review unresolved alarms by severity and device instead of scanning raw telemetry logs.",
+  "evidence": [
+    {
+      "source": "clinical monitoring workflow evidence",
+      "finding": "Alarm prioritization and reviewability are important in monitoring environments.",
+      "confidence": "medium",
+      "limitation": "Needs validation with local ICU workflow."
+    }
+  ],
+  "mvp_scope": [
+    "alarm list by device",
+    "severity filter",
+    "acknowledge state",
+    "operator note",
+    "timestamp",
+    "exportable review record"
+  ],
+  "out_of_scope": [
+    "AI diagnosis",
+    "automatic treatment recommendation",
+    "autonomous alarm resolution"
+  ],
+  "engineering_notes": {
+    "data_model": [
+      "alarm_event table",
+      "severity mapping",
+      "acknowledgement state",
+      "operator audit log"
+    ],
+    "api": [
+      "GET /devices/{id}/alarms",
+      "POST /alarms/{id}/acknowledge",
+      "GET /alarms/export"
+    ],
+    "security": [
+      "role-based acknowledgement",
+      "immutable audit trail"
+    ]
+  },
+  "risks": [
+    "incorrect severity mapping",
+    "alert fatigue if queue is noisy",
+    "operator over-reliance on dashboard"
+  ],
+  "validation": [
+    "test with ICU staff",
+    "measure time to identify unresolved critical alarms",
+    "review false priority cases"
+  ],
+  "scores": {
+    "evidence_strength": 4,
+    "user_pain": 5,
+    "workflow_fit": 5,
+    "feasibility": 4,
+    "operational_value": 5,
+    "complexity": 2,
+    "maintenance_risk": 2,
+    "safety_risk": 3
+  },
+  "decision": "build_now",
+  "confidence": "medium-high"
+}
