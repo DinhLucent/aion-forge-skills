@@ -244,30 +244,45 @@ Decision classes:
 
 ```text
 .
-├─ bin/
-│  └─ aion-forge-skills.js
-├─ evals/
-│  ├─ fixtures/
-│  ├─ graders/
-│  ├─ prompts.csv
-│  └─ run_codex_skill_evals.mjs
-├─ examples/
-│  └─ alarm_review_queue_candidate.json
-├─ scripts/
-│  ├─ install-aion-forge.ps1
-│  └─ install-aion-forge.sh
-├─ skills/
-│  ├─ aion-forge/
-│  ├─ aion-evidence-harvester/
-│  ├─ aion-pain-point-distiller/
-│  ├─ aion-contradiction-miner/
-│  ├─ aion-idea-forge/
-│  ├─ aion-skeptic-council/
-│  ├─ aion-feature-spec-architect/
-│  ├─ aion-evaluation-harness/
-│  └─ aion-evolution-memory/
-├─ package.json
-└─ README.md
+|-- bin/
+|   `-- aion-forge-skills.js
+|-- evals/
+|   |-- fixtures/
+|   |-- graders/
+|   |-- subagents/
+|   |-- prompts.csv
+|   |-- run_codex_skill_evals.mjs
+|   |-- run_subagent_matrix.mjs
+|   `-- test-matrix.json
+|-- examples/
+|   `-- alarm_review_queue_candidate.json
+|-- scripts/
+|   |-- check-bash-syntax.js
+|   |-- check-format.js
+|   |-- check_python_syntax.py
+|   |-- clean-python-cache.js
+|   |-- install-aion-forge.ps1
+|   |-- install-aion-forge.sh
+|   |-- run-local-benchmarks.js
+|   `-- validate-skills.js
+|-- skills/
+|   |-- aion-forge/
+|   |-- aion-evidence-harvester/
+|   |-- aion-pain-point-distiller/
+|   |-- aion-contradiction-miner/
+|   |-- aion-idea-forge/
+|   |-- aion-skeptic-council/
+|   |-- aion-feature-spec-architect/
+|   |-- aion-evaluation-harness/
+|   `-- aion-evolution-memory/
+|-- tests/
+|   |-- cli-smoke.mjs
+|   |-- install-local.mjs
+|   |-- json-evaluator.mjs
+|   `-- package-integrity.mjs
+|-- LICENSE
+|-- package.json
+`-- README.md
 ```
 
 ## Development
@@ -283,6 +298,8 @@ Run the full local check suite:
 ```bash
 npm run check
 ```
+
+This repository intentionally uses local checks instead of GitHub Actions so the validation path remains usable without paid Actions minutes.
 
 Individual checks:
 
@@ -301,6 +318,15 @@ npm run test:package
 npm run test:local
 npm run bench
 ```
+
+The local suites cover:
+
+- `test:cli`: command parsing, install scopes, dry-run behavior, bad args, and path handling.
+- `test:install`: real install into a temporary project directory, skip-existing behavior, and `--force`.
+- `test:json`: evaluator pass, warning, hard-fail, score, and multi-candidate behavior.
+- `test:package`: package contents, tarball size, and forbidden artifact checks.
+- `test:subagents`: sub-agent role prompt contracts and local test matrix integrity.
+- `bench`: runtime budgets for syntax, validation, CLI dry-runs, evaluator tests, install tests, and package checks.
 
 Benchmark output can be written locally without committing generated reports:
 
