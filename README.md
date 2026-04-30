@@ -35,9 +35,37 @@ If evidence is weak, AION-FORGE makes the weakness visible instead of hiding it 
 | `aion-evaluation-harness` | Score innovation outputs and detect hallucinated or weak proposals. |
 | `aion-evolution-memory` | Store validated lessons, rejected ideas, constraints, and reusable patterns. |
 
-## Install With npx
+## Quickstart
 
-Before the package is published to npm, install directly from GitHub:
+Install interactively with the same `skills` CLI flow used by repositories such as `mattpocock/skills`:
+
+```bash
+npx skills@latest add DinhLucent/aion-forge-skills
+```
+
+List the available skills without installing:
+
+```bash
+npx skills@latest add DinhLucent/aion-forge-skills --list
+```
+
+Install every AION-FORGE skill into the current project for Codex without prompts:
+
+```bash
+npx skills@latest add DinhLucent/aion-forge-skills --skill '*' --agent codex --yes --copy
+```
+
+This installs the skills into:
+
+```text
+<project>/.agents/skills/
+```
+
+Use the interactive command when you want to choose individual skills or target multiple agents. Use the non-interactive command when you want a repeatable project install for Codex.
+
+## AION Installer
+
+This repository also ships a deterministic installer for Codex-specific scopes and older local setups. Before the package is published to npm, run it directly from GitHub:
 
 ```bash
 npx github:DinhLucent/aion-forge-skills project
@@ -46,7 +74,7 @@ npx github:DinhLucent/aion-forge-skills admin
 npx github:DinhLucent/aion-forge-skills legacy-codex
 ```
 
-After npm publication, the same installer works with the package name:
+After npm publication, the same installer will work with the package name:
 
 ```bash
 npx aion-forge-skills project
