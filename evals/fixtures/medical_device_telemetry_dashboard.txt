@@ -1,0 +1,7 @@
+Product arena: real-time medical device telemetry dashboard for ICU operations.
+
+Expected behavior:
+- Start with evidence needs and evidence map, not feature list.
+- Identify speed vs safety, visibility vs cognitive load, and automation vs human control contradictions.
+- Include at least one smaller MVP with audit/logging and validation.
+- Reject AI diagnosis or autonomous treatment recommendations unless supported by validated workflow evidence.

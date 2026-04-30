@@ -12,17 +12,19 @@ function usage() {
 
 Usage:
   npx aion-forge-skills project [--project <path>] [--force] [--dry-run]
-  npx aion-forge-skills global [--codex-home <path>] [--force] [--dry-run]
-  npx aion-forge-skills install --scope project|global [options]
+  npx aion-forge-skills user [--home <path>] [--force] [--dry-run]
+  npx aion-forge-skills legacy-codex [--codex-home <path>] [--force] [--dry-run]
+  npx aion-forge-skills install --scope project|user|legacy-codex [options]
   npx aion-forge-skills list [--json]
 
 GitHub usage before npm publish:
   npx github:DinhLucent/aion-forge-skills project
-  npx github:DinhLucent/aion-forge-skills global
+  npx github:DinhLucent/aion-forge-skills user
 
 Targets:
   project -> <project>/.agents/skills
-  global  -> $CODEX_HOME/skills, or ~/.codex/skills when CODEX_HOME is unset
+  user    -> ~/.agents/skills
+  legacy-codex -> $CODEX_HOME/skills, or ~/.codex/skills when CODEX_HOME is unset
 `;
 }
 
@@ -31,6 +33,7 @@ function parseArgs(argv) {
     command: argv[0] || "help",
     scope: null,
     projectPath: process.cwd(),
+    homePath: os.homedir(),
     codexHome: process.env.CODEX_HOME || path.join(os.homedir(), ".codex"),
     force: false,
     dryRun: false,
@@ -39,8 +42,11 @@ function parseArgs(argv) {
 
   if (args.command === "install") {
     args.scope = "project";
-  } else if (args.command === "project" || args.command === "global") {
+  } else if (args.command === "project" || args.command === "user" || args.command === "legacy-codex") {
     args.scope = args.command;
+    args.command = "install";
+  } else if (args.command === "global") {
+    args.scope = "user";
     args.command = "install";
   }
 
@@ -53,6 +59,9 @@ function parseArgs(argv) {
       i += 1;
     } else if (arg === "--project" || arg === "--project-path") {
       args.projectPath = requiredValue(arg, next);
+      i += 1;
+    } else if (arg === "--home") {
+      args.homePath = requiredValue(arg, next);
       i += 1;
     } else if (arg === "--codex-home") {
       args.codexHome = requiredValue(arg, next);
@@ -68,6 +77,10 @@ function parseArgs(argv) {
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
+  }
+
+  if (args.scope === "global") {
+    args.scope = "user";
   }
 
   return args;
@@ -97,11 +110,15 @@ function resolveTarget(args) {
     return path.join(path.resolve(args.projectPath), ".agents", "skills");
   }
 
-  if (args.scope === "global") {
+  if (args.scope === "user") {
+    return path.join(path.resolve(args.homePath), ".agents", "skills");
+  }
+
+  if (args.scope === "legacy-codex") {
     return path.join(path.resolve(args.codexHome), "skills");
   }
 
-  throw new Error("Scope must be project or global");
+  throw new Error("Scope must be project, user, or legacy-codex");
 }
 
 function install(args) {

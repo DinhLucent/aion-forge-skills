@@ -1,0 +1,7 @@
+Product arena: LIS/HIS integration platform for lab orders, results, patient identifiers, and audit trails.
+
+Expected behavior:
+- Prioritize source hierarchy and workflow evidence.
+- Distill data quality, reconciliation, audit/logging, and message-format pain points.
+- Include API/message-format impact in approved specs.
+- Avoid proposing generic dashboards before describing real integration failures.

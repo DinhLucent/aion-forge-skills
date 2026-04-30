@@ -41,21 +41,21 @@ Before the package is published to npm, install directly from GitHub:
 
 ```bash
 npx github:DinhLucent/aion-forge-skills project
-npx github:DinhLucent/aion-forge-skills global
+npx github:DinhLucent/aion-forge-skills user
 ```
 
 After npm publication, the same installer works with the package name:
 
 ```bash
 npx aion-forge-skills project
-npx aion-forge-skills global
+npx aion-forge-skills user
 ```
 
 Aliases are also available:
 
 ```bash
 npx aion-forge project
-npx aion-forge global
+npx aion-forge user
 ```
 
 ### Project Install
@@ -72,24 +72,34 @@ Use a different project path:
 npx github:DinhLucent/aion-forge-skills project --project /path/to/project
 ```
 
-### Global Install
+### User Install
 
-Installs skills into the global Codex skill directory:
+Installs skills into the current user's Codex skill directory:
 
 ```text
-$CODEX_HOME/skills/
+~/.agents/skills/
 ```
 
-If `CODEX_HOME` is not set, the installer uses:
+This is the recommended personal install target for current Codex Agent Skills.
+
+### Legacy Codex Install
+
+For older Codex setups, install into the legacy Codex home:
 
 ```text
 ~/.codex/skills/
 ```
 
-Use a custom Codex home:
+If `CODEX_HOME` is set, legacy install uses:
+
+```text
+$CODEX_HOME/skills/
+```
+
+Use a custom legacy Codex home:
 
 ```bash
-npx github:DinhLucent/aion-forge-skills global --codex-home /path/to/.codex
+npx github:DinhLucent/aion-forge-skills legacy-codex --codex-home /path/to/.codex
 ```
 
 ### Installer Options
@@ -100,8 +110,11 @@ npx github:DinhLucent/aion-forge-skills list --json
 npx github:DinhLucent/aion-forge-skills project --dry-run
 npx github:DinhLucent/aion-forge-skills project --force
 npx github:DinhLucent/aion-forge-skills install --scope project
-npx github:DinhLucent/aion-forge-skills install --scope global
+npx github:DinhLucent/aion-forge-skills install --scope user
+npx github:DinhLucent/aion-forge-skills install --scope legacy-codex
 ```
+
+`global` is accepted as a backward-compatible alias for `user`.
 
 ## Install With Local Scripts
 
@@ -109,14 +122,16 @@ PowerShell:
 
 ```powershell
 .\scripts\install-aion-forge.ps1 -Scope project -ProjectPath .
-.\scripts\install-aion-forge.ps1 -Scope global
+.\scripts\install-aion-forge.ps1 -Scope user
+.\scripts\install-aion-forge.ps1 -Scope legacy-codex
 ```
 
 Bash:
 
 ```bash
 ./scripts/install-aion-forge.sh project .
-./scripts/install-aion-forge.sh global
+./scripts/install-aion-forge.sh user
+./scripts/install-aion-forge.sh legacy-codex
 ```
 
 ## Usage
@@ -222,6 +237,11 @@ Decision classes:
 .
 ├─ bin/
 │  └─ aion-forge-skills.js
+├─ evals/
+│  ├─ fixtures/
+│  ├─ graders/
+│  ├─ prompts.csv
+│  └─ run_codex_skill_evals.mjs
 ├─ examples/
 │  └─ alarm_review_queue_candidate.json
 ├─ scripts/
@@ -249,16 +269,20 @@ List skills:
 npm run list
 ```
 
-Check CLI JSON output:
+Run the full local check suite:
 
 ```bash
 npm run check
 ```
 
-Validate Codex skill frontmatter with the Codex `skill-creator` validator when available:
+Individual checks:
 
 ```bash
-python ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/aion-forge
+npm run check:node
+npm run check:python
+npm run check:bash
+npm run validate:skills
+npm run test:evaluator
 ```
 
 Pack locally:
@@ -271,7 +295,8 @@ Run an npx-style local test:
 
 ```bash
 node bin/aion-forge-skills.js project --dry-run
-node bin/aion-forge-skills.js global --dry-run
+node bin/aion-forge-skills.js user --dry-run
+node bin/aion-forge-skills.js legacy-codex --dry-run
 ```
 
 ## Safety Philosophy

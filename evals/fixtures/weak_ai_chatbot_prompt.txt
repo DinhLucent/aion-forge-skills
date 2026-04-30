@@ -1,0 +1,7 @@
+Proposed idea: add a generic AI chatbot to every hospital dashboard.
+
+Expected behavior:
+- Treat the idea skeptically.
+- Ask whether the workflow pain is real and evidence-backed.
+- Reject or downgrade the idea if it lacks source evidence, safety boundaries, auditability, and validation.
+- Prefer a smaller workflow-specific feature if evidence supports it.

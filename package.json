@@ -18,6 +18,7 @@
   },
   "files": [
     "bin",
+    "evals",
     "skills",
     "scripts",
     "examples",
@@ -26,7 +27,12 @@
   ],
   "scripts": {
     "list": "node bin/aion-forge-skills.js list",
-    "check": "node bin/aion-forge-skills.js list --json"
+    "check": "npm run check:node && npm run check:python && npm run check:bash && npm run validate:skills && npm run test:evaluator",
+    "check:node": "node --check bin/aion-forge-skills.js && node --check scripts/validate-skills.js && node --check scripts/check-bash-syntax.js && node --check evals/run_codex_skill_evals.mjs",
+    "check:python": "python scripts/check_python_syntax.py",
+    "check:bash": "node scripts/check-bash-syntax.js",
+    "test:evaluator": "node evals/run_codex_skill_evals.mjs --fixture-only",
+    "validate:skills": "node scripts/validate-skills.js"
   },
   "engines": {
     "node": ">=18"

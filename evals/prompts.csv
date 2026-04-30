@@ -1,0 +1,4 @@
+id,should_trigger,prompt,fixture
+medical-device-telemetry,true,"Use $aion-forge to discover useful features for a real-time medical device telemetry dashboard without inventing sources.",fixtures/medical_device_telemetry_dashboard.txt
+lis-his-integration,true,"Use $aion-forge to find evidence-grounded opportunities for a LIS/HIS integration platform.",fixtures/lis_his_integration_platform.txt
+flashy-ai-chatbot,true,"Use $aion-skeptic-council to review this idea: add a generic AI chatbot to every hospital dashboard.",fixtures/weak_ai_chatbot_prompt.txt
