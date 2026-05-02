@@ -16,7 +16,6 @@ const toolkitEntries = [
   "README.md",
   "LICENSE",
   "package.json",
-  ".npmignore",
 ];
 
 function usage() {
